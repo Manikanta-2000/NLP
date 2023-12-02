@@ -152,6 +152,104 @@ def final_summary(sentence_weighted_frequency,thresholdFrequency):
 
 
 # In[ ]:
+import nltk
+
+def bleu_score(generated_summary,actual_summary):
+    hypothesis = generated_summary
+    reference = actual_summary
+    BLEUscore = nltk.translate.bleu_score.sentence_bleu([reference], hypothesis)
+    return BLEUscore
+
+
+# In[13]:
+
+
+def process_summarization(text):
+    sentences=tokenize_sentences(text)
+    updated_sentences = remove_stopwords(sentences)
+    all_tokens = generate_tokens(updated_sentences)
+    wordfrequencies = word_frequency(all_tokens)
+    weighted_frequencies = weighted_frequency(wordfrequencies)
+    sentence_weighted_frequency = sentence_frequency(sentences,weighted_frequencies)
+    thresholdFrequency = threshold_frequency(sentence_weighted_frequency)
+    generated_summary = final_summary(sentence_weighted_frequency,thresholdFrequency)
+    return generated_summary
+
+
+# In[14]:
+
+
+file1=open("./BBC News Summary/BBC News Summary/News Articles/entertainment/001.txt","r+")
+text=file1.read()
+file1.close()
+generated_summary=process_summarization(text)
+
+
+# In[15]:
+
+
+generated_summary
+
+
+# In[16]:
+
+
+summarized_file=open("./BBC News Summary/BBC News Summary/Summaries/entertainment/001.txt","r+")
+actual_summary=summarized_file.read()
+summarized_file.close()
+
+
+# In[17]:
+
+
+actual_summary
+
+
+# In[18]:
+
+
+print("BLEU_Score : ",bleu_score(generated_summary,actual_summary))
+
+
+# In[19]:
+
+
+file1=open("./BBC News Summary/BBC News Summary/News Articles/tech/100.txt","r+")
+text=file1.read()
+file1.close()
+
+
+# In[20]:
+
+
+generated_summary=process_summarization(text)
+
+
+# In[21]:
+
+
+generated_summary
+
+
+# In[22]:
+
+
+summarized_file=open("./BBC News Summary/BBC News Summary/Summaries/tech/100.txt","r+")
+actual_summary=summarized_file.read()
+summarized_file.close()
+
+
+# In[23]:
+
+
+actual_summary
+
+
+# In[24]:
+
+
+print("BLEU_Score : ",bleu_score(generated_summary,actual_summary))
+
 
 
 
